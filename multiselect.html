@@ -1,22 +1,22 @@
-{% macro multi_select(name, options, placeholder, disabled_options=[], min_select=0, max_select=0, onChange=None, preselected=[], container_class="multi-select-container", input_class="multi-select-input", badge_class="badge bg-primary me-1 mb-1 d-flex align-items-center", dropdown_class="dropdown-menu w-100 shadow-sm") %}
-<div class="{{container_class}}" 
+{% macro multi_select(name, options, placeholder="", disabled_options=[], min_select=0, max_select=0, onChange=None, preselected=[], container_class="multi-select-container", input_class="multi-select-input", badge_class="badge bg-primary me-1 mb-1 d-flex align-items-center", dropdown_class="dropdown-menu w-100 shadow-sm") %}
+<div class="ms-c {{container_class}}" 
      data-min-select="{{ min_select }}" 
      data-max-select="{{ max_select }}" 
      data-on-change="{{ onChange }}" 
      data-preselected='{{ preselected | tojson | safe }}'>
     
     <div class="selected-items form-control d-flex flex-wrap align-items-center" tabindex="0">
-        <input type="text" class="{{ input_class }} border-0 flex-grow-1" placeholder="{{ placeholder }}" autocomplete="off">
+        <input type="text" class="ms-i {{ input_class }} border-0 flex-grow-1" placeholder="{{ placeholder }}" autocomplete="off">
     </div>
-    <ul class="{{ dropdown_class }}"></ul>
+    <ul class="ms-d {{ dropdown_class }}"></ul>
     <input type="hidden" name="{{ name }}" class="multi-select-hidden">
 </div>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.' + "{{ container_class }}").forEach(container => {
-      const input = container.querySelector('.' + "{{ input_class }}");
-      const dropdown = container.querySelector('.' + "{{ dropdown_class }}");
+    document.querySelectorAll('.ms-c').forEach(container => {
+      const input = container.querySelector('.ms-i');
+      const dropdown = container.querySelector('.ms-d');
       const hiddenInput = container.querySelector('.multi-select-hidden');
 
       // Fonction utilitaire pour parser le JSON en toute sécurité
