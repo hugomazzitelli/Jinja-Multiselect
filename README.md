@@ -1,9 +1,4 @@
-# Jinja-Multiselect
-Une version tunning du multiselect de la librairie Select2
-
-Voici le contenu du fichier README.md :
-
-# Composant Multiselect pour Flask
+# Jinja-Multiselect pour Flask
 
 Ce composant est un widget multiselect personnalisable conçu pour les projets Flask utilisant Bootstrap. Tout le code (HTML, CSS et JavaScript) est contenu dans un seul fichier `multiselect.html` pour faciliter son intégration et sa maintenance.
 
@@ -16,7 +11,7 @@ Ce composant est un widget multiselect personnalisable conçu pour les projets F
 
 ## Installation
 
-1. **Clonez ou téléchargez** ce dépôt depuis le GitHub de l'entreprise.
+1. **Clonez ou téléchargez** ce dépôt depuis le GitHub.
 2. **Placez** le fichier `multiselect.html` dans le répertoire de vos templates Flask (par exemple, `templates/components/`).
 3. **Assurez-vous** que Bootstrap est chargé dans votre projet pour bénéficier des styles par défaut.
 
@@ -76,10 +71,10 @@ Pour personnaliser l’apparence, vous pouvez passer vos propres classes CSS via
     placeholder="Tapez pour rechercher...",
     onChange="onMultiselectChange",
     preselected=[],
-    container_class="custom-container",
-    input_class="custom-input",
-    badge_class="custom-badge",
-    dropdown_class="custom-dropdown"
+    container_class="custom-class",
+    input_class="custom-class text-secondary",
+    badge_class="custom-class p-1",
+    dropdown_class="custom-class border-0"
 ) }}
 ```
 
