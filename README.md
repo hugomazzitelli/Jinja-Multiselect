@@ -77,7 +77,8 @@ Pour personnaliser l’apparence, vous pouvez passer vos propres classes CSS via
     dropdown_class="custom-class border-0"
 ) }}
 ```
-> :warning: **Warning:** Ne pas utiliser les classes `ms-c`, `ms-i` et `ms-d` ailleurs sur votre page, car elles sont réservées par le composant pour garantir son bon fonctionnement.
+> [!CAUTION]
+> Ne pas utiliser les classes `ms-c`, `ms-i` et `ms-d` ailleurs sur votre page, car elles sont réservées par le composant pour garantir son bon fonctionnement.
 
 Fonction Callback
 
