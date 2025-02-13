@@ -25,7 +25,7 @@ Dans votre template Jinja, importez le macro :
 {% from 'components/multiselect.html' import multi_select %}
 ```
 
-2. Appel du composant
+### 2. Appel du composant
 
 Voici un exemple simple d’utilisation :
 
@@ -45,22 +45,22 @@ Voici un exemple simple d’utilisation :
 </form>
 ```
 
-3. Paramètres du composant
+### 3. Paramètres du composant
 
-| Paramètre            | Type              | Valeur par défaut                  | Description                                                                                  | Exemple                                     | Required |
-|----------------------|-------------------|------------------------------------|----------------------------------------------------------------------------------------------|---------------------------------------------|----------|
-| **name**             | `String`          | —                                  | Nom de l'input caché utilisé pour stocker la sélection.                                      | `"my_multiselect"`                          | Yes      |
-| **options**          | `Array<String>`   | —                                  | Tableau des options disponibles.                                                             | `["Option 1", "Option 2", "Option 3"]`        | Yes      |
-| **placeholder**      | `String`          | —                                  | Texte affiché dans l'input avant la saisie.                                                  | `"Sélectionnez des options..."`             | Yes      |
-| **disabled_options** | `Array<String>`   | `[]`                               | Liste des options à désactiver dans le dropdown.                                | `["Option 2"]`                              | No       |
-| **onChange**         | `String`          | `null`                             | Nom d'une fonction JavaScript globale à appeler lors d'un changement.            | `"onMultiselectChange"`                     | No       |
-| **preselected**      | `Array<String>`   | `[]`                               | Liste des options déjà sélectionnées lors du chargement.                          | `["Option 2"]`                              | No       |
-| **container_class**  | `String`          | `"multi-select-container"`         | Classe CSS du conteneur global.                                                 | `"custom-container"`                        | No       |
-| **input_class**      | `String`          | `"multi-select-input"`             | Classe CSS de l'input de saisie.                                                | `"custom-input"`                            | No       |
-| **badge_class**      | `String`          | `"badge bg-primary"`               | Classe CSS des badges affichant les options sélectionnées.                         | `"custom-badge"`                            | No       |
-| **dropdown_class**   | `String`          | `"dropdown-menu"`                  | Classe CSS du menu déroulant.                                                   | `"custom-dropdown"`                         | No       |
+| Paramètre             | Type             | Valeur par défaut                                       | Description                                                                                  | Exemple                                     |
+|-----------------------|------------------|---------------------------------------------------------|----------------------------------------------------------------------------------------------|---------------------------------------------|
+| **name** <span style="background-color:#d9534f;color:white;padding:2px 4px;font-size:0.8em;border-radius:3px;">Required</span>            | `String`         | —                                                       | Nom de l'input caché utilisé pour stocker la sélection.                                      | `"my_multiselect"`                          |
+| **options** <span style="background-color:#d9534f;color:white;padding:2px 4px;font-size:0.8em;border-radius:3px;">Required</span>         | `Array<String>`  | —                                                       | Tableau des options disponibles.                                                             | `["Option 1", "Option 2", "Option 3"]`        |
+| **placeholder** <span style="background-color:#d9534f;color:white;padding:2px 4px;font-size:0.8em;border-radius:3px;">Required</span>     | `String`         | —                                                       | Texte affiché dans l'input avant la saisie.                                                  | `"Sélectionnez des options..."`             |
+| **disabled_options** <span style="background-color:#5bc0de;color:white;padding:2px 4px;font-size:0.8em;border-radius:3px;">Optional</span> | `Array<String>`  | `[]`                                                    | Liste des options à désactiver dans le dropdown.                                             | `["Option 2"]`                              |
+| **onChange** <span style="background-color:#5bc0de;color:white;padding:2px 4px;font-size:0.8em;border-radius:3px;">Optional</span>         | `String`         | `null`                                                  | Nom d'une fonction JavaScript globale appelée lors d'un changement de sélection.             | `"onMultiselectChange"`                     |
+| **preselected** <span style="background-color:#5bc0de;color:white;padding:2px 4px;font-size:0.8em;border-radius:3px;">Optional</span>     | `Array<String>`  | `[]`                                                    | Liste des options déjà sélectionnées lors du chargement.                                     | `["Option 2"]`                              |
+| **container_class** <span style="background-color:#5bc0de;color:white;padding:2px 4px;font-size:0.8em;border-radius:3px;">Optional</span> | `String`         | `"multi-select-container"`                              | Classe CSS du conteneur global. **(Les classes réservées par le composant sont `ms-c`.)**      | `"custom-container"`                        |
+| **input_class** <span style="background-color:#5bc0de;color:white;padding:2px 4px;font-size:0.8em;border-radius:3px;">Optional</span>     | `String`         | `"multi-select-input"`                                  | Classe CSS de l'input de saisie. **(Les classes réservées par le composant sont `ms-i`.)**      | `"custom-input"`                            |
+| **badge_class** <span style="background-color:#5bc0de;color:white;padding:2px 4px;font-size:0.8em;border-radius:3px;">Optional</span>     | `String`         | `"badge bg-primary me-1 mb-1 d-flex align-items-center"`  | Classe CSS des badges affichant les options sélectionnées.                                   | `"custom-badge"`                            |
+| **dropdown_class** <span style="background-color:#5bc0de;color:white;padding:2px 4px;font-size:0.8em;border-radius:3px;">Optional</span>  | `String`         | `"dropdown-menu w-100 shadow-sm"`                       | Classe CSS du menu déroulant. **(Les classes réservées par le composant sont `ms-d`.)**         | `"custom-dropdown"`                         |
 
-4. Personnalisation des styles
+### 4. Personnalisation des styles
 
 Pour personnaliser l’apparence, vous pouvez passer vos propres classes CSS via les paramètres du macro ou utiliser les classes de votre librairie frontend (BootStrap, Tailwind, etc...). Par exemple :
 
