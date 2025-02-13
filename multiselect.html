@@ -1,0 +1,170 @@
+{% macro multi_select(name, options, placeholder, disabled_options=[], min_select=0, max_select=0, onChange=None, preselected=[], container_class="multi-select-container", input_class="multi-select-input", badge_class="badge bg-primary me-1 mb-1 d-flex align-items-center", dropdown_class="dropdown-menu w-100 shadow-sm") %}
+<div class="{{container_class}}" 
+     data-min-select="{{ min_select }}" 
+     data-max-select="{{ max_select }}" 
+     data-on-change="{{ onChange }}" 
+     data-preselected='{{ preselected | tojson | safe }}'>
+    
+    <div class="selected-items form-control d-flex flex-wrap align-items-center" tabindex="0">
+        <input type="text" class="{{ input_class }} border-0 flex-grow-1" placeholder="{{ placeholder }}" autocomplete="off">
+    </div>
+    <ul class="{{ dropdown_class }}"></ul>
+    <input type="hidden" name="{{ name }}" class="multi-select-hidden">
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.' + "{{ container_class }}").forEach(container => {
+      const input = container.querySelector('.' + "{{ input_class }}");
+      const dropdown = container.querySelector('.' + "{{ dropdown_class }}");
+      const hiddenInput = container.querySelector('.multi-select-hidden');
+
+      // Fonction utilitaire pour parser le JSON en toute sécurité
+      const parseJSON = (str, defaultVal = []) => {
+        try {
+          return JSON.parse(str);
+        } catch (error) {
+          console.error("Erreur de parsing JSON:", str, error);
+          return defaultVal;
+        }
+      };
+
+      // Récupère les items pré-sélectionnés depuis l'attribut data-preselected
+      let selectedItems = [...parseJSON(container.dataset.preselected)];
+
+      // Options passées en paramètre (doivent être un tableau)
+      const availableOptions = {{ options|tojson | default('[]', true) }};
+      // Disabled options initiales (modifiable)
+      const currentDisabledOptions = new Set({{ disabled_options|tojson | default('[]', true) }});
+      const onChangeCallback = container.getAttribute('data-on-change');
+
+      // Récupère la liste actuelle des items sélectionnés en lisant le DOM
+      const getSelectedItems = () =>
+        Array.from(container.querySelectorAll('.badge')).map(badge => badge.dataset.value);
+
+      // Met à jour l'input caché en fonction des badges présents
+      const updateHiddenInput = () => {
+        selectedItems = getSelectedItems();
+        hiddenInput.value = JSON.stringify(selectedItems);
+      };
+
+      // Met à jour le dropdown en fonction de la saisie et des items déjà sélectionnés
+      const updateDropdown = (filter = '') => {
+        dropdown.innerHTML = '';
+        const filtered = availableOptions.filter(opt =>
+          !selectedItems.includes(opt) &&
+          opt.toLowerCase().includes(filter.toLowerCase())
+        );
+        filtered.forEach(option => {
+          const li = document.createElement('li');
+          li.className = 'dropdown-item';
+          li.textContent = option;
+          if (currentDisabledOptions.has(option)) {
+            li.classList.add('disabled');
+          } else {
+            li.addEventListener('click', () => addItem(option));
+          }
+          dropdown.appendChild(li);
+        });
+        if (document.activeElement === input && filtered.length > 0) {
+          dropdown.classList.add('show');
+        } else {
+          dropdown.classList.remove('show');
+        }
+      };
+
+      // Rafraîchit l'interface : dropdown + champ caché
+      const refreshUI = () => {
+        updateDropdown(input.value);
+        updateHiddenInput();
+      };
+
+      // Déclenche le callback externe si défini
+      const triggerOnChange = () => {
+        if (onChangeCallback && typeof window[onChangeCallback] === 'function') {
+          window[onChangeCallback](selectedItems, container);
+        }
+      };
+
+      // Ajoute un item s'il n'est pas déjà sélectionné
+      const addItem = (item, triggerChange = true) => {
+        // Vérifier via data-value pour éviter les doublons
+        const containerItems = getSelectedItems();
+        if (containerItems.includes(item)) return;
+        selectedItems.push(item);
+
+        // Création du badge
+        const badge = document.createElement('span');
+        badge.className = '{{ badge_class }}';
+        badge.dataset.value = item;
+        badge.textContent = item;
+
+        // Bouton de suppression
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'btn-close btn-close-white ms-2';
+        removeBtn.setAttribute('aria-label', 'Remove');
+        removeBtn.addEventListener('click', () => removeItem(item, badge));
+        badge.appendChild(removeBtn);
+
+        // Insérer le badge dans la zone des éléments sélectionnés
+        container.querySelector('.selected-items').insertBefore(badge, input);
+
+        // Réinitialiser le champ de saisie
+        input.value = '';
+        refreshUI();
+        if (triggerChange) triggerOnChange();
+      };
+
+      // Supprime un item et met à jour l'interface
+      const removeItem = (item, badgeElement) => {
+        selectedItems = selectedItems.filter(i => i !== item);
+        badgeElement.remove();
+        refreshUI();
+        triggerOnChange();
+      };
+
+      // Gestion des événements sur l'input
+      input.addEventListener('input', e => updateDropdown(e.target.value));
+      input.addEventListener('focus', () => updateDropdown(input.value));
+
+      // Ferme le dropdown si le clic se fait en dehors du conteneur
+      document.addEventListener('click', e => {
+        if (!container.contains(e.target)) {
+          dropdown.classList.remove('show');
+        }
+      });
+
+      // Méthode publique pour mettre à jour les options désactivées
+      container.setDisabledOptions = newDisabled => {
+        currentDisabledOptions.clear();
+        newDisabled.forEach(item => currentDisabledOptions.add(item));
+        updateDropdown(input.value);
+      };
+
+      // Initialisation
+      selectedItems.forEach(item => addItem(item, false));
+      updateHiddenInput();
+    });
+  });
+</script>
+
+<style>
+  .multi-select-container {
+    position: relative;
+  }
+  .multi-select-input {
+    outline: none;
+    min-width: 120px;
+  }
+  .dropdown-menu {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .badge {
+    cursor: default;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+  }
+</style>
+{% endmacro %}
